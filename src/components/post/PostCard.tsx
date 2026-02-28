@@ -59,7 +59,7 @@ export default function PostCard({ post, currentUserId }: Props) {
       <p style={{ marginTop: 12, lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{post.content}</p>
 
       <div style={{ marginTop: 16, display: "flex", gap: 20 }}>
-        <form action={likePost.bind(null, post.id)}>
+        <form action={async () => { await likePost(post.id); }}>
           <button
             type="submit"
             style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-muted)", fontSize: 13, display: "flex", gap: 6, alignItems: "center" }}
