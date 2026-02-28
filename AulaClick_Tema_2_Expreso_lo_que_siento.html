@@ -1,0 +1,65 @@
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <style>
+            * { touch-action: none; box-sizing: border-box; -webkit-user-select: none; }
+            body { font-family: 'Comic Sans MS', sans-serif; background: #e8f5e9; margin: 0; padding: 10px; height: 100vh; display: flex; flex-direction: column; }
+            .card { background: white; border-radius: 20px; padding: 20px; border: 3px solid #2e7d32; flex-grow: 1; display: flex; flex-direction: column; box-shadow: 0 8px 0 #1b5e20; }
+            .header { text-align: center; color: #2e7d32; border-bottom: 2px solid #a5d6a7; margin-bottom: 10px; }
+            .work-area { position: relative; width: 100%; height: 250px; background: #f1f8e9; border-radius: 15px; border: 2px dashed #4caf50; display: flex; align-items: center; justify-content: center; }
+            .svg-bg { width: 150px; height: 150px; opacity: 0.3; }
+            .drop-target { position: absolute; width: 90px; height: 35px; border: 2px solid #2e7d32; background: rgba(255,255,255,0.9); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; color: #1b5e20; z-index: 5; }
+            .bank { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; background: #c8e6c9; padding: 12px; border-radius: 15px; margin: 15px 0; min-height: 50px; }
+            .label-box { background: #2e7d32; color: white; padding: 8px 12px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer; z-index: 10; box-shadow: 0 3px #1b5e20; }
+            #res { display: none; padding: 15px; text-align: center; font-weight: bold; font-size: 1.2rem; border-radius: 10px; }
+            .btn { background: #ff9800; color: white; border: none; padding: 15px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px #e65100; }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <div class="header"><h3>Tema 2: Expreso lo que siento</h3></div>
+            <div class="work-area">
+                <svg class="svg-bg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#FFEB3B" stroke="#000"/><circle cx="35" cy="40" r="5"/><circle cx="65" cy="40" r="5"/><path d="M30 65 Q50 85 70 65" fill="none" stroke="#000" stroke-width="3"/></svg>
+                <div class="drop-target" id="T_p0" style="top:45%; left:20%;">?</div><div class="drop-target" id="T_p1" style="top:55%; left:40%;">?</div><div class="drop-target" id="T_p2" style="top:45%; left:60%;">?</div><div class="drop-target" id="T_p3" style="top:55%; left:80%;">?</div>
+            </div>
+            <div class="bank" id="bank"><div class="label-box" id="L0">La conversación</div><div class="label-box" id="L1">¿A qué sabe la </div><div class="label-box" id="L2">Experiencia per</div><div class="label-box" id="L3">Un día feliz</div></div>
+            <div id="res"></div>
+            <button class="btn" id="btn" onclick="evaluar()">CALIFICAR</button>
+            <div style="text-align:center; font-size:9px; color:#666; margin-top:10px;">AULACLICK - 2026</div>
+        </div>
+        <script>
+            const sols = { 'T_p0': '¿a qué sabe la ', 'T_p1': 'la conversación', 'T_p2': 'un día feliz', 'T_p3': 'experiencia per' };
+            document.querySelectorAll('.label-box').forEach(l => {
+                l.ontouchstart = (e) => { l.style.position = 'absolute'; l.style.zIndex = 100; };
+                l.ontouchmove = (e) => {
+                    let t = e.touches[0];
+                    l.style.left = (t.pageX - 45) + 'px';
+                    l.style.top = (t.pageY - 15) + 'px';
+                };
+                l.ontouchend = (e) => {
+                    l.style.display = 'none';
+                    let t = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                    l.style.display = 'block'; l.style.position = 'static';
+                    if(t && t.classList.contains('drop-target')) { t.innerHTML = ""; t.appendChild(l); }
+                    else { document.getElementById('bank').appendChild(l); }
+                };
+            });
+            function evaluar() {
+                let pts = 0; let tot = Object.keys(sols).length;
+                for(let id in sols) {
+                    let z = document.getElementById(id);
+                    if(z.innerText.toLowerCase().trim() === sols[id]) { pts++; z.style.background = "#a5d6a7"; }
+                    else { z.style.background = "#ef9a9a"; }
+                }
+                let r = document.getElementById('res'); r.style.display = 'block';
+                r.innerHTML = "NOTA: " + pts + "/" + tot;
+                r.style.background = (pts/tot >= 0.7) ? "#c8e6c9" : "#ffcdd2";
+                document.getElementById('btn').style.display = 'none';
+            }
+        </script>
+    </body>
+    </html>
+    
