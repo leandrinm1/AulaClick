@@ -1,10 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['undici', 'firebase'],
+  transpilePackages: ['undici', '@firebase/functions', 'firebase'],
+  experimental: {
+    serverComponentsExternalPackages: ['undici']
+  },
   webpack: (config) => {
-    config.externals.push({
-      'utf-8-validate': 'commonjs utf-8-validate',
-      'bufferutil': 'commonjs bufferutil',
+    config.module.rules.push({
+      test: /\.js$/,
+      include: /node_modules\/undici/,
+      use: {
+        loader: 'next-swc-loader',
+        options: {
+          jsc: {
+            parser: {
+              syntax: 'ecmascript',
+              privateMethod: true
+            }
+          }
+        }
+      }
     });
     return config;
   },
