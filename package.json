@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "undici": "6.13.0",
+    "undici": "5.28.4",
     "firebase": "^10.7.0",
     "firebase-admin": "^12.0.0",
     "next": "14.1.0",
@@ -26,7 +26,7 @@
     "eslint-config-next": "14.1.0"
   },
   "overrides": {
-    "undici": "6.13.0"
+    "undici": "5.28.4"
   },
   "engines": {
     "node": "20.x"
