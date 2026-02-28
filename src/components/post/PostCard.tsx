@@ -45,7 +45,7 @@ export default function PostCard({ post, currentUserId }: Props) {
           </div>
         </div>
         {isOwner && (
-          <form action={deletePost.bind(null, post.id)}>
+          <form action={async () => { await deletePost(post.id); }}>
             <button
               type="submit"
               style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-muted)", fontSize: 12 }}
